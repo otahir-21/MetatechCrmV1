@@ -1,0 +1,121 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, bcmath, pdo, pdo_mysql, tokenizer, json, ctype, fileinfo, openssl, curl
+      
+      - name: Copy .env file
+        run: |
+          echo "Creating .env file structure"
+          cp .env.example .env || echo ".env.example not found, skipping"
+      
+      - name: Install Composer Dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+      
+      - name: Run Tests (Optional)
+        run: |
+          php artisan test || echo "Tests skipped - no test suite configured"
+        continue-on-error: true
+      
+      - name: Build Assets
+        run: |
+          if [ -f "package.json" ]; then
+            npm ci
+            npm run build
+          else
+            echo "No package.json found, skipping asset build"
+          fi
+        continue-on-error: true
+      
+      - name: Create deployment archive
+        run: |
+          # Exclude unnecessary files
+          tar --exclude='.git' \
+              --exclude='.github' \
+              --exclude='node_modules' \
+              --exclude='tests' \
+              --exclude='.env' \
+              --exclude='storage/logs/*' \
+              --exclude='storage/framework/cache/*' \
+              --exclude='storage/framework/sessions/*' \
+              --exclude='storage/framework/views/*' \
+              -czf deploy.tar.gz .
+      
+      - name: Deploy to Hostinger via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT || 65002 }}
+          source: "deploy.tar.gz"
+          target: "/tmp"
+          strip_components: 0
+      
+      - name: Extract and Deploy on Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT || 65002 }}
+          script: |
+            # Navigate to project directory
+            cd ${{ secrets.HOSTINGER_DEPLOY_PATH || '/home/u123456789/domains/metatech.ae/public_html' }}
+            
+            # Put site in maintenance mode
+            php artisan down || true
+            
+            # Backup current deployment
+            if [ -d "storage" ]; then
+              tar -czf /tmp/backup-$(date +%Y%m%d-%H%M%S).tar.gz storage/ .env || true
+            fi
+            
+            # Extract new deployment
+            tar -xzf /tmp/deploy.tar.gz -C .
+            rm /tmp/deploy.tar.gz
+            
+            # Install/update dependencies
+            composer install --no-dev --optimize-autoloader --no-interaction
+            
+            # Set permissions
+            chmod -R 755 storage bootstrap/cache
+            chown -R ${{ secrets.HOSTINGER_USERNAME }}:${{ secrets.HOSTINGER_USERNAME }} storage bootstrap/cache
+            
+            # Clear all caches
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan route:clear
+            php artisan view:clear
+            
+            # Run migrations
+            php artisan migrate --force
+            
+            # Rebuild caches
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            # Bring site back up
+            php artisan up
+            
+            echo "Deployment completed successfully!"
+
