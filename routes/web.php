@@ -56,6 +56,29 @@ Route::prefix('internal')->middleware(['auth', 'subdomain.verify'])->group(funct
     Route::get('/employees/{id}', [\App\Http\Controllers\Internal\EmployeeController::class, 'show'])->name('internal.employees.show');
     Route::get('/employees/{id}/edit', [\App\Http\Controllers\Internal\EmployeeController::class, 'edit'])->name('internal.employees.edit');
     Route::put('/employees/{id}', [\App\Http\Controllers\Internal\EmployeeController::class, 'update'])->name('internal.employees.update');
+    
+    // Clients (Internal CRM - Sales)
+    Route::resource('clients', \App\Http\Controllers\Internal\ClientController::class)->names([
+        'index' => 'internal.clients.index',
+        'create' => 'internal.clients.create',
+        'store' => 'internal.clients.store',
+        'show' => 'internal.clients.show',
+        'edit' => 'internal.clients.edit',
+        'update' => 'internal.clients.update',
+        'destroy' => 'internal.clients.destroy',
+    ]);
+    
+    // Deals (Internal CRM - Sales Pipeline)
+    Route::resource('deals', \App\Http\Controllers\Internal\DealController::class)->names([
+        'index' => 'internal.deals.index',
+        'create' => 'internal.deals.create',
+        'store' => 'internal.deals.store',
+        'show' => 'internal.deals.show',
+        'edit' => 'internal.deals.edit',
+        'update' => 'internal.deals.update',
+        'destroy' => 'internal.deals.destroy',
+    ]);
+    Route::patch('/deals/{deal}/stage', [\App\Http\Controllers\Internal\DealController::class, 'updateStage'])->name('internal.deals.updateStage');
     });
 });
 
