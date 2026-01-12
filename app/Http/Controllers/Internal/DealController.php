@@ -33,7 +33,9 @@ class DealController extends Controller
         
         // Get all sales users for assignment
         $salesUsers = User::where('is_metatech_employee', true)
-            ->whereIn('role', ['user', 'admin', 'super_admin'])
+            ->where('department', 'Sales')
+            ->where('status', 'active')
+            ->orderBy('first_name')
             ->get();
 
         return view('internal.deals.index', compact('dealsByStage', 'statistics', 'salesUsers'));
@@ -46,7 +48,9 @@ class DealController extends Controller
     {
         $clients = Client::orderBy('name')->get();
         $salesUsers = User::where('is_metatech_employee', true)
-            ->whereIn('role', ['user', 'admin', 'super_admin'])
+            ->where('department', 'Sales')
+            ->where('status', 'active')
+            ->orderBy('first_name')
             ->get();
 
         return view('internal.deals.create', compact('clients', 'salesUsers'));
@@ -97,7 +101,9 @@ class DealController extends Controller
         
         $clients = Client::orderBy('name')->get();
         $salesUsers = User::where('is_metatech_employee', true)
-            ->whereIn('role', ['user', 'admin', 'super_admin'])
+            ->where('department', 'Sales')
+            ->where('status', 'active')
+            ->orderBy('first_name')
             ->get();
 
         return view('internal.deals.edit', compact('deal', 'clients', 'salesUsers'));

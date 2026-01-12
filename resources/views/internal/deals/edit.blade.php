@@ -133,15 +133,27 @@
 
                 <!-- Assigned To -->
                 <div>
-                    <label for="assigned_to" class="block text-sm font-medium text-gray-700">Assign To *</label>
-                    <select name="assigned_to" id="assigned_to" required
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                        @foreach($salesUsers as $user)
-                            <option value="{{ $user->id }}" {{ old('assigned_to', $deal->assigned_to) == $user->id ? 'selected' : '' }}>
-                                {{ $user->first_name }} {{ $user->last_name }} ({{ ucfirst($user->role) }})
-                            </option>
-                        @endforeach
-                    </select>
+                    <label for="assigned_to" class="block text-sm font-medium text-gray-700">Assign To Sales Agent *</label>
+                    @if($salesUsers->count() > 0)
+                        <select name="assigned_to" id="assigned_to" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
+                            @foreach($salesUsers as $user)
+                                <option value="{{ $user->id }}" {{ old('assigned_to', $deal->assigned_to) == $user->id ? 'selected' : '' }}>
+                                    {{ $user->first_name }} {{ $user->last_name }}
+                                    @if($user->designation)
+                                        - {{ $user->designation }}
+                                    @endif
+                                </option>
+                            @endforeach
+                        </select>
+                    @else
+                        <div class="mt-1 block w-full px-3 py-2 border border-yellow-300 bg-yellow-50 rounded-md">
+                            <p class="text-sm text-yellow-800">⚠️ No sales agents available. Please add a sales team member first.</p>
+                            <a href="{{ route('internal.dashboard') }}" class="text-sm text-purple-600 hover:text-purple-800 font-medium">
+                                → Go to Dashboard to Add Employee
+                            </a>
+                        </div>
+                    @endif
                     @error('assigned_to')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
