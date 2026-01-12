@@ -1,0 +1,101 @@
+================================================================================
+                    METATECH CRM - QUICK TEST URLS
+                    Server: http://localhost:8000
+================================================================================
+
+🔐 AUTHENTICATION
+────────────────────────────────────────────────────────────────────────────
+Product Owner Login:
+  http://admincrm.localhost:8000/login
+  http://localhost:8000/login
+
+Internal CRM Login:
+  http://crm.localhost:8000/login
+
+Company Login:
+  http://vyooo.localhost:8000/login
+
+Password Reset:
+  http://localhost:8000/password/forgot
+
+
+📊 PRODUCT OWNER DASHBOARD
+────────────────────────────────────────────────────────────────────────────
+Main Dashboard:
+  http://admincrm.localhost:8000/dashboard
+
+Create Company:
+  http://admincrm.localhost:8000/company/create
+
+Create Internal Employee:
+  http://admincrm.localhost:8000/internal-employee/create
+
+Audit Logs:
+  http://admincrm.localhost:8000/audit-logs
+
+
+👥 INTERNAL CRM (Metatech Employees)
+────────────────────────────────────────────────────────────────────────────
+Internal Dashboard:
+  http://crm.localhost:8000/internal/dashboard
+
+Projects:
+  http://crm.localhost:8000/internal/projects
+  http://crm.localhost:8000/internal/projects/create
+
+Employees:
+  http://crm.localhost:8000/internal/employees
+
+
+🏢 COMPANY/CLIENT PORTAL
+────────────────────────────────────────────────────────────────────────────
+Company Dashboard:
+  http://vyooo.localhost:8000/company-dashboard
+
+
+⚙️ SETUP (First Time Only)
+────────────────────────────────────────────────────────────────────────────
+Bootstrap:
+  http://localhost:8000/
+  http://localhost:8000/bootstrap/create
+  http://localhost:8000/bootstrap/confirm
+
+
+📧 INVITATIONS
+────────────────────────────────────────────────────────────────────────────
+Company Owner Invitation:
+  http://vyooo.localhost:8000/company-invite/accept?email=xxx&token=xxx
+
+Staff Invitation:
+  http://vyooo.localhost:8000/accept-invitation/{token}
+
+Employee Invitation:
+  http://crm.localhost:8000/employee/invite/accept?email=xxx&token=xxx
+
+
+================================================================================
+                          TESTING CHECKLIST
+================================================================================
+
+✅ Product Owner:
+   1. Login → http://admincrm.localhost:8000/login
+   2. Dashboard → http://admincrm.localhost:8000/dashboard
+   3. Create Company
+   4. Send Invitations
+   5. View Audit Logs
+
+✅ Internal CRM:
+   1. Login → http://crm.localhost:8000/login
+   2. Dashboard → http://crm.localhost:8000/internal/dashboard
+   3. Create Projects
+   4. Manage Employees
+
+✅ Company Owner:
+   1. Accept Invitation (from email)
+   2. Login → http://vyooo.localhost:8000/login
+   3. Dashboard → http://vyooo.localhost:8000/company-dashboard
+   4. Invite Staff
+   5. Manage Projects
+
+================================================================================
+
