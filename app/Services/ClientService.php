@@ -13,14 +13,14 @@ class ClientService
      */
     public function getAllClients(User $user)
     {
-        $query = Client::with('creator', 'deals');
+        $query = Client::with('creator')->withCount('deals');
 
         // If user is sales agent (role = user), show only their clients
         if ($user->role === 'user' && $user->is_metatech_employee) {
             $query->where('created_by', $user->id);
         }
 
-        return $query->latest()->get();
+        return $query->latest()->paginate(20);
     }
 
     /**
@@ -30,7 +30,6 @@ class ClientService
     {
         return DB::transaction(function () use ($data, $user) {
             $data['created_by'] = $user->id;
-            $data['status'] = $data['status'] ?? 'prospect';
 
             return Client::create($data);
         });

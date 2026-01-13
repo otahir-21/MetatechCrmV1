@@ -153,6 +153,15 @@ class EmployeeInvitationService
                 'email_verified_at' => now(), // Mark as verified since they accepted invitation
             ]);
 
+            // Assign Spatie permission role
+            if ($invitation->role) {
+                try {
+                    $user->assignRole($invitation->role);
+                } catch (\Exception $e) {
+                    \Log::warning("Failed to assign role '{$invitation->role}' to user {$user->email}: " . $e->getMessage());
+                }
+            }
+
             // Mark invitation as accepted
             $invitation->markAsAccepted();
 

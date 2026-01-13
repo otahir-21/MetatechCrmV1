@@ -78,6 +78,36 @@
                         </a>
                     </div>
 
+                    <!-- Sales Pipeline -->
+                    <div class="border border-gray-200 rounded-lg p-6 hover:border-purple-300 hover:shadow-md transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900">Sales Pipeline</h4>
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Track leads and deals with Kanban board</p>
+                        <a href="{{ route('internal.deals.index') }}" 
+                           class="w-full block text-center bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+                            View Pipeline
+                        </a>
+                    </div>
+
+                    <!-- Clients -->
+                    <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900">Clients</h4>
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Manage your digital marketing clients</p>
+                        <a href="{{ route('internal.clients.index') }}" 
+                           class="w-full block text-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                            View Clients
+                        </a>
+                    </div>
+
                     <!-- Manage Internal Employees -->
                     @if(auth()->user()->canManageInternalEmployees())
                     <div class="border border-gray-200 rounded-lg p-6 hover:border-indigo-300 hover:shadow-md transition-all">
@@ -196,12 +226,27 @@
                     <label class="block text-sm font-medium text-gray-700">Role *</label>
                     <select id="employeeRole" name="role" required
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                        @if(auth()->user() && auth()->user()->isInternalSuperAdmin())
-                            <option value="super_admin">Super Admin</option>
-                        @endif
+                        <optgroup label="Sales & Marketing">
+                            <option value="metatech.sales">Sales Agent</option>
+                            <option value="metatech.marketing">Marketing Specialist</option>
+                        </optgroup>
+                        <optgroup label="Development & Design">
+                            <option value="metatech.development">Developer</option>
+                            <option value="metatech.design">Designer</option>
+                        </optgroup>
+                        <optgroup label="Operations">
+                            <option value="metatech.accounts">Accounts/Finance</option>
+                            <option value="metatech.hr">HR</option>
+                            <option value="metatech.executive">Executive</option>
+                        </optgroup>
+                        <optgroup label="Administrative">
+                            <option value="metatech.admin">Admin</option>
+                            @if(auth()->user() && auth()->user()->isInternalSuperAdmin())
+                                <option value="metatech.super_admin">Super Admin</option>
+                            @endif
+                        </optgroup>
                     </select>
+                    <p class="mt-1 text-xs text-gray-500">Select role based on department and responsibilities</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Department</label>

@@ -45,10 +45,6 @@ class ClientController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string',
-            'industry' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'notes' => 'nullable|string',
-            'status' => 'required|in:active,inactive,prospect',
         ]);
 
         $client = $this->clientService->createClient($validated, auth()->user());
@@ -86,10 +82,6 @@ class ClientController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string',
-            'industry' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'notes' => 'nullable|string',
-            'status' => 'required|in:active,inactive,prospect',
         ]);
 
         $client = $this->clientService->updateClient($client, $validated);

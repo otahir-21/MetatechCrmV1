@@ -14,7 +14,7 @@ class DealService
      */
     public function getDealsByStage(User $user): array
     {
-        $query = Deal::with(['client', 'assignedUser'])->active();
+        $query = Deal::with(['client', 'assignedUser']);
 
         // Filter by permissions: Sales agents see only their deals
         if ($user->role === 'user' && $user->is_metatech_employee) {
