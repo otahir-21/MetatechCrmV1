@@ -8,9 +8,12 @@ use App\Models\Client;
 use App\Models\User;
 use App\Services\DealService;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class DealController extends Controller
 {
+    use AuthorizesRequests;
+    
     protected DealService $dealService;
 
     public function __construct(DealService $dealService)

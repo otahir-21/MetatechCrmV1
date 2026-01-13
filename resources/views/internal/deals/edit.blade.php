@@ -108,25 +108,25 @@
                 <!-- Priority & Stage -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="priority" class="block text-sm font-medium text-gray-700">Priority</label>
-                        <select name="priority" id="priority"
+                        <label for="priority" class="block text-sm font-medium text-gray-700">Priority *</label>
+                        <select name="priority" id="priority" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                            <option value="High" {{ old('priority', $deal->priority) == 'High' ? 'selected' : '' }}>High</option>
-                            <option value="Medium" {{ old('priority', $deal->priority) == 'Medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="Low" {{ old('priority', $deal->priority) == 'Low' ? 'selected' : '' }}>Low</option>
+                            <option value="high" {{ old('priority', $deal->priority) == 'high' ? 'selected' : '' }}>High</option>
+                            <option value="medium" {{ old('priority', $deal->priority) == 'medium' ? 'selected' : '' }}>Medium</option>
+                            <option value="low" {{ old('priority', $deal->priority) == 'low' ? 'selected' : '' }}>Low</option>
                         </select>
                     </div>
                     <div>
-                        <label for="stage" class="block text-sm font-medium text-gray-700">Stage</label>
-                        <select name="stage" id="stage"
+                        <label for="stage" class="block text-sm font-medium text-gray-700">Stage *</label>
+                        <select name="stage" id="stage" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                            <option value="New Lead" {{ old('stage', $deal->stage) == 'New Lead' ? 'selected' : '' }}>New Lead</option>
-                            <option value="Contacted" {{ old('stage', $deal->stage) == 'Contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="Qualified" {{ old('stage', $deal->stage) == 'Qualified' ? 'selected' : '' }}>Qualified</option>
-                            <option value="Proposal Sent" {{ old('stage', $deal->stage) == 'Proposal Sent' ? 'selected' : '' }}>Proposal Sent</option>
-                            <option value="Negotiation" {{ old('stage', $deal->stage) == 'Negotiation' ? 'selected' : '' }}>Negotiation</option>
-                            <option value="Won" {{ old('stage', $deal->stage) == 'Won' ? 'selected' : '' }}>Won</option>
-                            <option value="Lost" {{ old('stage', $deal->stage) == 'Lost' ? 'selected' : '' }}>Lost</option>
+                            <option value="new_lead" {{ old('stage', $deal->stage) == 'new_lead' ? 'selected' : '' }}>New Lead</option>
+                            <option value="contacted" {{ old('stage', $deal->stage) == 'contacted' ? 'selected' : '' }}>Contacted</option>
+                            <option value="qualified" {{ old('stage', $deal->stage) == 'qualified' ? 'selected' : '' }}>Qualified</option>
+                            <option value="proposal_sent" {{ old('stage', $deal->stage) == 'proposal_sent' ? 'selected' : '' }}>Proposal Sent</option>
+                            <option value="negotiation" {{ old('stage', $deal->stage) == 'negotiation' ? 'selected' : '' }}>Negotiation</option>
+                            <option value="won" {{ old('stage', $deal->stage) == 'won' ? 'selected' : '' }}>Won</option>
+                            <option value="lost" {{ old('stage', $deal->stage) == 'lost' ? 'selected' : '' }}>Lost</option>
                         </select>
                     </div>
                 </div>

@@ -127,7 +127,7 @@ class InternalEmployeeController extends Controller
             }
 
             // Prevent non-super_admin from creating super_admin invitations
-            if ($request->role === 'super_admin' && !$user->isInternalSuperAdmin()) {
+            if ($request->role === 'metatech.super_admin' && !$user->isInternalSuperAdmin()) {
                 return response()->json([
                     'message' => 'Only Internal Super Admin can invite other Super Admins',
                     'error_code' => 'INSUFFICIENT_PERMISSIONS',

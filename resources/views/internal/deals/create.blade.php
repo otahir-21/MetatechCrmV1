@@ -113,21 +113,21 @@
                 <!-- Priority & Stage -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="priority" class="block text-sm font-medium text-gray-700">Priority</label>
-                        <select name="priority" id="priority"
+                        <label for="priority" class="block text-sm font-medium text-gray-700">Priority *</label>
+                        <select name="priority" id="priority" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                            <option value="High" {{ old('priority') == 'High' ? 'selected' : '' }}>High</option>
-                            <option value="Medium" {{ old('priority', 'Medium') == 'Medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="Low" {{ old('priority') == 'Low' ? 'selected' : '' }}>Low</option>
+                            <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
+                            <option value="medium" {{ old('priority', 'medium') == 'medium' ? 'selected' : '' }}>Medium</option>
+                            <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Low</option>
                         </select>
                     </div>
                     <div>
-                        <label for="stage" class="block text-sm font-medium text-gray-700">Initial Stage</label>
-                        <select name="stage" id="stage"
+                        <label for="stage" class="block text-sm font-medium text-gray-700">Initial Stage *</label>
+                        <select name="stage" id="stage" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                            <option value="New Lead" {{ old('stage', 'New Lead') == 'New Lead' ? 'selected' : '' }}>New Lead</option>
-                            <option value="Contacted" {{ old('stage') == 'Contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="Qualified" {{ old('stage') == 'Qualified' ? 'selected' : '' }}>Qualified</option>
+                            <option value="new_lead" {{ old('stage', 'new_lead') == 'new_lead' ? 'selected' : '' }}>New Lead</option>
+                            <option value="contacted" {{ old('stage') == 'contacted' ? 'selected' : '' }}>Contacted</option>
+                            <option value="qualified" {{ old('stage') == 'qualified' ? 'selected' : '' }}>Qualified</option>
                         </select>
                     </div>
                 </div>

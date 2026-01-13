@@ -64,21 +64,21 @@
                         <div>
                             <p class="text-sm text-gray-600">Stage</p>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                                @if($deal->stage == 'Won') bg-green-100 text-green-800
-                                @elseif($deal->stage == 'Lost') bg-red-100 text-red-800
+                                @if($deal->stage == 'won') bg-green-100 text-green-800
+                                @elseif($deal->stage == 'lost') bg-red-100 text-red-800
                                 @else bg-blue-100 text-blue-800
                                 @endif">
-                                {{ $deal->stage }}
+                                {{ ucwords(str_replace('_', ' ', $deal->stage)) }}
                             </span>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Priority</p>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                                @if($deal->priority == 'High') bg-red-100 text-red-800
-                                @elseif($deal->priority == 'Medium') bg-yellow-100 text-yellow-800
+                                @if($deal->priority == 'high') bg-red-100 text-red-800
+                                @elseif($deal->priority == 'medium') bg-yellow-100 text-yellow-800
                                 @else bg-gray-100 text-gray-800
                                 @endif">
-                                {{ $deal->priority }}
+                                {{ ucfirst($deal->priority) }}
                             </span>
                         </div>
                     </div>
@@ -158,10 +158,6 @@
                         <div>
                             <p class="text-sm text-gray-600">Assigned To</p>
                             <p class="text-base font-medium text-gray-900">{{ $deal->assignedUser->first_name }} {{ $deal->assignedUser->last_name }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600">Created By</p>
-                            <p class="text-base text-gray-900">{{ $deal->creator->first_name }} {{ $deal->creator->last_name }}</p>
                         </div>
                     </div>
                 </div>

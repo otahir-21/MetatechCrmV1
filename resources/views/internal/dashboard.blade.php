@@ -226,12 +226,27 @@
                     <label class="block text-sm font-medium text-gray-700">Role *</label>
                     <select id="employeeRole" name="role" required
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                        @if(auth()->user() && auth()->user()->isInternalSuperAdmin())
-                            <option value="super_admin">Super Admin</option>
-                        @endif
+                        <optgroup label="Sales & Marketing">
+                            <option value="metatech.sales">Sales Agent</option>
+                            <option value="metatech.marketing">Marketing Specialist</option>
+                        </optgroup>
+                        <optgroup label="Development & Design">
+                            <option value="metatech.development">Developer</option>
+                            <option value="metatech.design">Designer</option>
+                        </optgroup>
+                        <optgroup label="Operations">
+                            <option value="metatech.accounts">Accounts/Finance</option>
+                            <option value="metatech.hr">HR</option>
+                            <option value="metatech.executive">Executive</option>
+                        </optgroup>
+                        <optgroup label="Administrative">
+                            <option value="metatech.admin">Admin</option>
+                            @if(auth()->user() && auth()->user()->isInternalSuperAdmin())
+                                <option value="metatech.super_admin">Super Admin</option>
+                            @endif
+                        </optgroup>
                     </select>
+                    <p class="mt-1 text-xs text-gray-500">Select role based on department and responsibilities</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Department</label>

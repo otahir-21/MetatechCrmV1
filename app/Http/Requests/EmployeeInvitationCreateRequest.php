@@ -22,7 +22,7 @@ class EmployeeInvitationCreateRequest extends FormRequest
             'role' => [
                 'required',
                 'string',
-                'in:admin,user,super_admin',
+                'in:metatech.super_admin,metatech.admin,metatech.executive,metatech.sales,metatech.accounts,metatech.hr,metatech.design,metatech.development,metatech.marketing',
             ],
             'department' => ['nullable', 'string', 'max:100'],
             'designation' => ['nullable', 'string', 'max:100'],
@@ -44,7 +44,7 @@ class EmployeeInvitationCreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'role.in' => 'The role must be one of: admin, user, super_admin.',
+            'role.in' => 'The role must be a valid Metatech role (e.g., metatech.sales, metatech.admin, etc.).',
         ];
     }
 }
