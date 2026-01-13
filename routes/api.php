@@ -95,10 +95,20 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{id}', [\App\Http\Controllers\Api\V1\TaskController::class, 'destroy']);
         Route::post('/{id}/position', [\App\Http\Controllers\Api\V1\TaskController::class, 'updatePosition']);
         Route::post('/bulk-positions', [\App\Http\Controllers\Api\V1\TaskController::class, 'bulkUpdatePositions']);
+        Route::patch('/{id}/toggle-internal', [\App\Http\Controllers\Api\V1\SharingController::class, 'toggleTaskInternal']);
         
         // Task Comments
         Route::get('/{id}/comments', [\App\Http\Controllers\Api\V1\TaskCommentController::class, 'index']);
         Route::post('/{id}/comments', [\App\Http\Controllers\Api\V1\TaskCommentController::class, 'store']);
+    });
+
+    // Sharing endpoints (Internal employees only)
+    Route::prefix('sharing')->middleware(['auth:api', 'subdomain.verify'])->group(function () {
+        // Share project resources
+        Route::post('/project-resource/share', [\App\Http\Controllers\Api\V1\SharingController::class, 'shareProjectResource']);
+        Route::post('/project-resource/revoke', [\App\Http\Controllers\Api\V1\SharingController::class, 'revokeProjectResourceAccess']);
+        Route::get('/project-resource/list', [\App\Http\Controllers\Api\V1\SharingController::class, 'getResourceShares']);
+        Route::post('/project-resource/bulk-share', [\App\Http\Controllers\Api\V1\SharingController::class, 'bulkShareProjectResource']);
     });
 
     // Test routes for Phase 2 (Role-based access)

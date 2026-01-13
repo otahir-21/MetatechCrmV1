@@ -47,12 +47,13 @@ class TaskService
             'assigned_to' => $data['assigned_to'] ?? null,
             'assigned_by' => $data['assigned_to'] ? $creator->id : null,
             'created_by' => $creator->id,
-            'due_date' => isset($data['due_date']) ? Carbon::parse($data['due_date']) : null,
-            'start_date' => isset($data['start_date']) ? Carbon::parse($data['start_date']) : null,
+            'due_date' => isset($data['due_date']) ? \Carbon\Carbon::parse($data['due_date']) : null,
+            'start_date' => isset($data['start_date']) ? \Carbon\Carbon::parse($data['start_date']) : null,
             'position' => $maxPosition + 1,
             'tags' => $data['tags'] ?? [],
             'checklist' => $data['checklist'] ?? [],
             'is_pinned' => $data['is_pinned'] ?? false,
+            'is_internal_only' => $data['is_internal_only'] ?? false,
         ]);
     }
 
@@ -132,6 +133,11 @@ class TaskService
         $query = Task::where('project_id', $projectId)
             ->with(['assignedTo', 'assignedBy', 'creator', 'comments.user']);
 
+        // Filter internal-only tasks for client users
+        if (!$user->is_metatech_employee) {
+            $query->visibleToClients();
+        }
+
         // Apply filters
         if (isset($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -175,6 +181,18 @@ class TaskService
             throw new \Exception('You do not have access to this project', 403);
         }
 
+        // Check if client user is trying to access internal-only task
+        if (!$user->is_metatech_employee && $task->is_internal_only) {
+            throw new \Exception('You do not have permission to view this task', 403);
+        }
+
+        // Filter internal-only comments for client users
+        if (!$user->is_metatech_employee) {
+            $task->setRelation('allComments', $task->allComments->filter(function ($comment) {
+                return !$comment->is_internal_only;
+            }));
+        }
+
         return $task;
     }
 
@@ -197,6 +215,11 @@ class TaskService
 
         $query = Task::whereIn('project_id', $projectIds)
             ->with(['project', 'assignedTo', 'assignedBy', 'creator']);
+
+        // Filter internal-only tasks for client users
+        if (!$user->is_metatech_employee) {
+            $query->visibleToClients();
+        }
 
         // Filter by assigned user
         if (isset($filters['assigned_to_me']) && $filters['assigned_to_me']) {

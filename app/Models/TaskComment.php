@@ -18,11 +18,13 @@ class TaskComment extends Model
         'parent_comment_id',
         'mentions',
         'attachments',
+        'is_internal_only',
     ];
 
     protected $casts = [
         'mentions' => 'array',
         'attachments' => 'array',
+        'is_internal_only' => 'boolean',
     ];
 
     public function task(): BelongsTo
@@ -43,5 +45,35 @@ class TaskComment extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(TaskComment::class, 'parent_comment_id')->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * Scope to get only client-visible comments (not internal-only).
+     */
+    public function scopeVisibleToClients($query)
+    {
+        return $query->where('is_internal_only', false);
+    }
+
+    /**
+     * Scope to get only internal comments.
+     */
+    public function scopeInternalOnly($query)
+    {
+        return $query->where('is_internal_only', true);
+    }
+
+    /**
+     * Check if this comment is visible to a specific user.
+     */
+    public function isVisibleTo(User $user): bool
+    {
+        // Internal employees can see everything
+        if ($user->is_metatech_employee) {
+            return true;
+        }
+
+        // Client users can only see non-internal comments
+        return !$this->is_internal_only;
     }
 }

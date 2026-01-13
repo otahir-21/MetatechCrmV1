@@ -28,6 +28,7 @@ class Task extends Model
         'checklist',
         'attachments',
         'is_pinned',
+        'is_internal_only',
     ];
 
     protected $casts = [
@@ -38,6 +39,7 @@ class Task extends Model
         'checklist' => 'array',
         'attachments' => 'array',
         'is_pinned' => 'boolean',
+        'is_internal_only' => 'boolean',
     ];
 
     public function project(): BelongsTo
@@ -91,5 +93,44 @@ class Task extends Model
         $total = count($this->checklist);
         
         return $total > 0 ? (int) (($completed / $total) * 100) : 0;
+    }
+
+    /**
+     * Scope to get only client-visible tasks (not internal-only).
+     */
+    public function scopeVisibleToClients($query)
+    {
+        return $query->where('is_internal_only', false);
+    }
+
+    /**
+     * Scope to get only internal tasks.
+     */
+    public function scopeInternalOnly($query)
+    {
+        return $query->where('is_internal_only', true);
+    }
+
+    /**
+     * Check if this task is visible to a specific user.
+     */
+    public function isVisibleTo(User $user): bool
+    {
+        // Internal employees can see everything
+        if ($user->is_metatech_employee) {
+            return true;
+        }
+
+        // Client users can only see non-internal tasks
+        if ($this->is_internal_only) {
+            return false;
+        }
+
+        // Check if explicitly shared with this user
+        return ProjectShare::where('resource_type', 'task')
+            ->where('resource_id', $this->id)
+            ->where('shared_with_user_id', $user->id)
+            ->active()
+            ->exists();
     }
 }
